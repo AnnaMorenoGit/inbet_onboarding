@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Welcome to Inbet — Presentation</title>
+
+<!-- ================= PPTXjs + dependencies (vendored, public/MIT) ================= -->
+<link rel="stylesheet" href="vendor/css/pptxjs.css">
+<link rel="stylesheet" href="vendor/css/nv.d3.min.css">
+
+<style>
+/* ============================== Theme ============================== */
+:root{
+  --brand:        #0033b5;   /* Inbet royal blue (sampled) */
+  --brand-dark:   #00269a;
+  --brand-deep:   #001c78;   /* sidebar background */
+  --brand-deeper: #001152;
+  --accent:       #f8e048;   /* Inbet yellow (sampled from logo) */
+  --accent-soft:  #fbe98a;
+  --ink:          #0e1633;
+  --muted:        #aeb9e8;
+  --paper:        #eef1fb;
+  --sidebar-w:    288px;
+  --radius:       12px;
+  --shadow:       0 10px 30px rgba(8,16,60,.18);
+  font-synthesis: none;
+}
+
+*{ box-sizing: border-box; }
+html,body{ height:100%; margin:0; }
+body{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  overflow: hidden;
+}
+
+/* ============================== Layout shell ============================== */
+.app{ display:flex; height:100vh; width:100vw; }
+
+/* ---------- Sidebar (one clickable tab per slide) ---------- */
+.sidebar{
+  width: var(--sidebar-w);
+  flex: 0 0 var(--sidebar-w);
+  background: linear-gradient(180deg, var(--brand-deep) 0%, var(--brand-deeper) 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(255,255,255,.06);
+}
+.brand{
+  display:flex; align-items:center; gap:10px;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.brand .logo{
+  display:block; height:30px; width:auto;
+}
+.brand .sub{
+  font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--muted); margin-top: 2px;
+}
+
+.tablist{
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 10px 10px 18px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.25) transparent;
+}
+.tablist::-webkit-scrollbar{ width: 8px; }
+.tablist::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.18); border-radius: 8px; }
+
+.tab{
+  display: flex; align-items: center; gap: 12px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  color: #dfe5ff;
+  padding: 9px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1.25;
+  transition: background .15s ease, color .15s ease;
+}
+.tab:hover{ background: rgba(255,255,255,.07); color:#fff; }
+.tab.active{
+  background: var(--brand);
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
+}
+.tab.active .num{ background: var(--accent); color: var(--brand-deeper); }
+.tab .num{
+  flex: 0 0 28px;
+  height: 28px; width: 28px;
+  display: grid; place-items: center;
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 13px; font-weight: 700;
+}
+.tab .label{
+  flex: 1 1 auto;
+  font-size: 13.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Main stage ---------- */
+.main{ flex:1 1 auto; display:flex; flex-direction:column; min-width:0; }
+
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  background: #fff;
+  border-bottom: 1px solid #e3e8f7;
+}
+.topbar .title{
+  font-size: 15px; font-weight: 700; color: var(--ink);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.controls{ display:flex; align-items:center; gap:8px; flex:0 0 auto; }
+.btn{
+  appearance:none; border:1px solid #d3daf3; background:#fff; color:var(--brand-dark);
+  height:36px; padding:0 14px; border-radius:9px; font:inherit; font-weight:600;
+  cursor:pointer; display:inline-flex; align-items:center; gap:6px;
+  transition: background .15s, border-color .15s, transform .05s;
+}
+.btn:hover:not(:disabled){ background:var(--paper); border-color:#b9c3ef; }
+.btn:active:not(:disabled){ transform: translateY(1px); }
+.btn:disabled{ opacity:.45; cursor:default; }
+.btn.primary{ background:var(--brand); border-color:var(--brand); color:#fff; }
+.btn.primary:hover{ background:var(--brand-dark); }
+.counter{
+  font-variant-numeric: tabular-nums; font-weight:700; color:var(--brand-dark);
+  min-width: 64px; text-align:center; font-size:14px;
+}
+
+.stage{
+  position: relative;
+  flex: 1 1 auto;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 26px;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #ffffff 0%, var(--paper) 60%);
+}
+
+/* PPTXjs render target — sized to the scaled active slide */
+#deck{
+  position: relative;
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+/* Neutralise PPTXjs default slide chrome; we provide our own frame on #deck */
+#deck .slide{
+  margin: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transform-origin: top left;
+}
+
+/* ---------- Loading / error overlays ---------- */
+.overlay{
+  position:absolute; inset:0; z-index:5;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:18px; text-align:center; padding:32px;
+  background: var(--paper);
+}
+.overlay.hidden{ display:none; }
+.spinner{
+  width:46px; height:46px; border-radius:50%;
+  border:4px solid #d7def7; border-top-color: var(--brand);
+  animation: spin .8s linear infinite;
+}
+@keyframes spin{ to{ transform: rotate(360deg); } }
+.overlay p{ margin:0; color:#3a4677; max-width: 520px; line-height:1.5; }
+.overlay .head{ font-size:18px; font-weight:800; color:var(--ink); }
+.overlay.error .head{ color:#b3261e; }
+.overlay code{
+  background:#fff; border:1px solid #dbe1f4; padding:2px 8px; border-radius:6px;
+  font-size:13px; color:var(--brand-dark);
+}
+.hint{
+  background:#fff; border:1px solid #dbe1f4; border-radius:10px;
+  padding:14px 16px; text-align:left; max-width:560px; font-size:13.5px; color:#3a4677;
+}
+.hint b{ color: var(--ink); }
+
+/* ---------- Mobile ---------- */
+.menu-toggle{ display:none; }
+@media (max-width: 880px){
+  .menu-toggle{
+    display:inline-flex; align-items:center; justify-content:center;
+    height:36px; width:40px; border-radius:9px; border:1px solid #d3daf3;
+    background:#fff; cursor:pointer; color:var(--brand-dark); font-size:18px;
+  }
+  .sidebar{
+    position: fixed; z-index: 30; top:0; bottom:0; left:0;
+    transform: translateX(-100%); transition: transform .22s ease;
+    box-shadow: 0 0 40px rgba(0,0,0,.35);
+  }
+  .sidebar.open{ transform: translateX(0); }
+  .scrim{
+    position:fixed; inset:0; background:rgba(7,19,78,.45); z-index:20;
+    opacity:0; pointer-events:none; transition:opacity .2s;
+  }
+  .scrim.show{ opacity:1; pointer-events:auto; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- ===================== Sidebar: slide tabs ===================== -->
+  <aside class="sidebar" id="sidebar" aria-label="Slide navigation">
+    <div class="brand">
+      <div>
+        <img class="logo" src="assets/inbet-logo.png" alt="Inbet">
+        <div class="sub">Welcome Presentation</div>
+      </div>
+    </div>
+    <nav class="tablist" id="tablist" role="tablist" aria-orientation="vertical"></nav>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <!-- ===================== Main stage ===================== -->
+  <main class="main">
+    <div style="background:#fff8d6;border-bottom:1px solid #efe19a;color:#5b4b00;font-size:12.5px;padding:7px 18px;line-height:1.4;">
+      <b>Live render</b> — reads the <code>.pptx</code> at runtime via PPTXjs, so it always reflects the current file.
+      SmartArt diagrams (the circular team graphics) may render imperfectly here;
+      for a pixel-perfect view use <a href="index.html" style="color:#1f3bd4;font-weight:600;">index.html</a>.
+    </div>
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle slide list">☰</button>
+        <div class="title" id="slideTitle">Loading presentation…</div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="prevBtn" disabled>‹ Prev</button>
+        <span class="counter" id="counter">– / –</span>
+        <button class="btn primary" id="nextBtn" disabled>Next ›</button>
+        <button class="btn" id="fsBtn" title="Fullscreen">⤢</button>
+      </div>
+    </header>
+
+    <section class="stage" id="stage">
+      <!-- PPTXjs renders the .pptx into #deck -->
+      <div id="deck"></div>
+
+      <!-- Loading -->
+      <div class="overlay" id="loading">
+        <div class="spinner"></div>
+        <p class="head">Rendering slides from PowerPoint…</p>
+        <p>Reading <code>presentation/Welcome_Inbet_Online.pptx</code> directly in your browser.</p>
+      </div>
+
+      <!-- Error -->
+      <div class="overlay error hidden" id="error">
+        <p class="head">Couldn’t load the presentation</p>
+        <p>The browser blocked reading the <code>.pptx</code> file. This almost always means the
+           page was opened straight from disk (<code>file://</code>), which can’t fetch local files.</p>
+        <div class="hint">
+          <b>Fix — serve the folder over HTTP:</b><br><br>
+          • <b>VS Code:</b> install the <b>Live Server</b> extension, right-click
+            <code>index.html</code> → <b>Open with Live Server</b>.<br>
+          • <b>Terminal:</b> run <code>python -m http.server 8000</code> in this folder,
+            then open <code>http://localhost:8000</code>.<br>
+          • <b>GitHub Pages:</b> push the repo and enable Pages — it’s served over HTTP automatically.
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ===================== Vendored libraries (load order matters) ===================== -->
+<script src="vendor/js/jquery-1.11.3.min.js"></script>
+<script src="vendor/js/jszip.min.js"></script>
+<script src="vendor/js/filereader.js"></script>
+<script src="vendor/js/d3.min.js"></script>
+<script src="vendor/js/nv.d3.min.js"></script>
+<script src="vendor/js/dingbat.js"></script>
+<script src="vendor/js/pptxjs.min.js"></script>
+<script src="vendor/js/divs2slides.min.js"></script>
+
+<script>
+/* =====================================================================
+   Inbet presentation viewer
+   - PPTXjs renders the .pptx live (slides stay in sync with the file)
+   - We split the rendered .slide elements into clickable sidebar tabs
+   ===================================================================== */
+(function () {
+  "use strict";
+
+  var PPTX_URL = "presentation/Welcome_Inbet_Online.pptx";
+
+  var $deck      = document.getElementById("deck");
+  var $tablist   = document.getElementById("tablist");
+  var $loading   = document.getElementById("loading");
+  var $error     = document.getElementById("error");
+  var $title     = document.getElementById("slideTitle");
+  var $counter   = document.getElementById("counter");
+  var $prev      = document.getElementById("prevBtn");
+  var $next      = document.getElementById("nextBtn");
+  var $stage     = document.getElementById("stage");
+  var $fs        = document.getElementById("fsBtn");
+  var $menu      = document.getElementById("menuToggle");
+  var $sidebar   = document.getElementById("sidebar");
+  var $scrim     = document.getElementById("scrim");
+
+  var slides  = [];     // array of .slide elements
+  var current = -1;
+
+  /* Proactively warn if opened from disk — PPTXjs can't XHR a local file there */
+  if (location.protocol === "file:") {
+    showError();
+    return;
+  }
+
+  /* ---- Kick off PPTXjs rendering ---- */
+  // Pure-native render; we handle responsive scaling ourselves.
+  jQuery("#deck").pptxToHtml({
+    pptxFileUrl: PPTX_URL,
+    slidesScale: "",          // render at native size
+    slideMode: false,         // we build our own navigation
+    keyBoardShortCut: false,
+    mediaProcess: false
+  });
+
+  /* ---- Wait for slides to appear, then build the UI ---- */
+  var started = Date.now();
+  var lastCount = -1, stableSince = 0;
+  var poll = setInterval(function () {
+    var found = $deck.querySelectorAll(".slide");
+    var n = found.length;
+
+    if (n > 0) {
+      if (n === lastCount) {
+        // count held steady — assume rendering finished
+        if (Date.now() - stableSince > 500) {
+          clearInterval(poll);
+          slides = Array.prototype.slice.call(found);
+          buildUI();
+          return;
+        }
+      } else {
+        lastCount = n;
+        stableSince = Date.now();
+      }
+    }
+
+    if (Date.now() - started > 30000) {   // 30s timeout
+      clearInterval(poll);
+      if (n > 0) { slides = Array.prototype.slice.call(found); buildUI(); }
+      else showError();
+    }
+  }, 200);
+
+  /* ---- Build tabs + wire navigation ---- */
+  function buildUI() {
+    $loading.classList.add("hidden");
+
+    slides.forEach(function (slide, i) {
+      slide.style.display = "none";          // hide all; activate() shows one
+      slide.style.position = "absolute";
+      slide.style.top = "0";
+      slide.style.left = "0";
+
+      var btn = document.createElement("button");
+      btn.className = "tab";
+      btn.setAttribute("role", "tab");
+      btn.innerHTML =
+        '<span class="num">' + (i + 1) + '</span>' +
+        '<span class="label">' + escapeHtml(titleOf(slide, i)) + '</span>';
+      btn.addEventListener("click", function () {
+        activate(i);
+        closeSidebarOnMobile();
+      });
+      $tablist.appendChild(btn);
+    });
+
+    $prev.addEventListener("click", function () { activate(current - 1); });
+    $next.addEventListener("click", function () { activate(current + 1); });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight" || e.key === "PageDown") { activate(current + 1); }
+      else if (e.key === "ArrowLeft" || e.key === "PageUp") { activate(current - 1); }
+      else if (e.key === "Home") { activate(0); }
+      else if (e.key === "End") { activate(slides.length - 1); }
+    });
+
+    window.addEventListener("resize", function () { if (current >= 0) fit(); });
+
+    activate(0);
+  }
+
+  /* ---- Show slide i, scale it to fit, sync tabs/controls ---- */
+  function activate(i) {
+    if (i < 0 || i >= slides.length || i === current) {
+      // still refresh control state at the ends
+      if (i === current) updateControls();
+      return;
+    }
+    if (current >= 0) slides[current].style.display = "none";
+    current = i;
+
+    var slide = slides[current];
+    slide.style.display = "block";
+    fit();
+
+    // sidebar state
+    var tabs = $tablist.children;
+    for (var t = 0; t < tabs.length; t++) tabs[t].classList.toggle("active", t === i);
+    if (tabs[i]) tabs[i].scrollIntoView({ block: "nearest" });
+
+    $title.textContent = titleOf(slide, i);
+    updateControls();
+    $stage.scrollTop = 0; $stage.scrollLeft = 0;
+  }
+
+  /* ---- Scale active slide to fit the stage (transform doesn't affect offset*) ---- */
+  function fit() {
+    var slide = slides[current];
+    if (!slide) return;
+
+    slide.style.transform = "none";                 // measure native box
+    var w = slide.offsetWidth  || nativePx(slide, "width")  || 960;
+    var h = slide.offsetHeight || nativePx(slide, "height") || 540;
+
+    var availW = $stage.clientWidth  - 52;          // minus stage padding
+    var availH = $stage.clientHeight - 52;
+    var scale = Math.min(availW / w, availH / h);
+    scale = Math.max(0.05, Math.min(scale, 2));     // sane bounds
+
+    slide.style.transform = "scale(" + scale + ")";
+    $deck.style.width  = Math.round(w * scale) + "px";
+    $deck.style.height = Math.round(h * scale) + "px";
+  }
+
+  function nativePx(el, prop) {
+    var v = (el.style[prop] || "").replace("px", "");
+    var n = parseFloat(v);
+    return isNaN(n) ? 0 : n;
+  }
+
+  function updateControls() {
+    $prev.disabled = current <= 0;
+    $next.disabled = current >= slides.length - 1;
+    $counter.textContent = (current + 1) + " / " + slides.length;
+  }
+
+  /* ---- Best-effort tab title from the slide's own text (keeps it in sync) ---- */
+  function titleOf(slide, i) {
+    var text = (slide.innerText || slide.textContent || "").replace(/\u00a0/g, " ");
+    var lines = text.split("\n");
+    for (var k = 0; k < lines.length; k++) {
+      var line = lines[k].trim();
+      if (line.length >= 2 && line.length <= 42 && /[A-Za-z]/.test(line)) {
+        return line.length > 34 ? line.slice(0, 33) + "…" : line;
+      }
+    }
+    return "Slide " + (i + 1);
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function showError() {
+    $loading.classList.add("hidden");
+    $error.classList.remove("hidden");
+  }
+
+  /* ---- Fullscreen + mobile sidebar ---- */
+  $fs.addEventListener("click", function () {
+    var el = document.documentElement;
+    if (!document.fullscreenElement) (el.requestFullscreen || el.webkitRequestFullscreen || function(){}).call(el);
+    else (document.exitFullscreen || document.webkitExitFullscreen || function(){}).call(document);
+  });
+  $menu.addEventListener("click", function () {
+    $sidebar.classList.toggle("open");
+    $scrim.classList.toggle("show");
+  });
+  $scrim.addEventListener("click", closeSidebarOnMobile);
+  function closeSidebarOnMobile() {
+    $sidebar.classList.remove("open");
+    $scrim.classList.remove("show");
+  }
+})();
+</script>
+</body>
+</html>

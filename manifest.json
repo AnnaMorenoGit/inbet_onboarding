@@ -1,0 +1,98 @@
+{
+  "source": "presentation/Welcome_Inbet_Online.pptx",
+  "generated": "build.py output — edit titles freely; re-run build.py to refresh images",
+  "slides": [
+    {
+      "file": "slides/slide-01.jpg",
+      "title": "Welcome to Inbet"
+    },
+    {
+      "file": "slides/slide-02.jpg",
+      "title": "Introduction"
+    },
+    {
+      "file": "slides/slide-03.jpg",
+      "title": "Teams — CRM"
+    },
+    {
+      "file": "slides/slide-04.jpg",
+      "title": "Teams — Casino & Live Casino"
+    },
+    {
+      "file": "slides/slide-05.jpg",
+      "title": "Teams — Sport"
+    },
+    {
+      "file": "slides/slide-06.jpg",
+      "title": "Teams — BI"
+    },
+    {
+      "file": "slides/slide-07.jpg",
+      "title": "Teams — CS & VIP"
+    },
+    {
+      "file": "slides/slide-08.jpg",
+      "title": "Teams — KYC & Payments"
+    },
+    {
+      "file": "slides/slide-09.jpg",
+      "title": "Teams — Risk & Fraud"
+    },
+    {
+      "file": "slides/slide-10.jpg",
+      "title": "Teams — Marketing"
+    },
+    {
+      "file": "slides/slide-11.jpg",
+      "title": "Teams — Project Management"
+    },
+    {
+      "file": "slides/slide-12.jpg",
+      "title": "Teams — Poker & Svara"
+    },
+    {
+      "file": "slides/slide-13.jpg",
+      "title": "Teams — Legal, HR, Finance, Admin"
+    },
+    {
+      "file": "slides/slide-14.jpg",
+      "title": "C-level — CEO"
+    },
+    {
+      "file": "slides/slide-15.jpg",
+      "title": "C-level — COO"
+    },
+    {
+      "file": "slides/slide-16.jpg",
+      "title": "C-level — CFO"
+    },
+    {
+      "file": "slides/slide-17.jpg",
+      "title": "C-level — CMO"
+    },
+    {
+      "file": "slides/slide-18.jpg",
+      "title": "Best Practices — Jira"
+    },
+    {
+      "file": "slides/slide-19.jpg",
+      "title": "Best Practices — E-mail (Outlook)"
+    },
+    {
+      "file": "slides/slide-20.jpg",
+      "title": "Access & Permissions — Accounts"
+    },
+    {
+      "file": "slides/slide-21.jpg",
+      "title": "Access & Permissions — Websites"
+    },
+    {
+      "file": "slides/slide-22.jpg",
+      "title": "First Steps in Getting to Know Inbet"
+    },
+    {
+      "file": "slides/slide-23.jpg",
+      "title": "Welcome to Your New Role"
+    }
+  ]
+}

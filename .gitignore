@@ -1,0 +1,8 @@
+# Build artifacts
+*.pdf
+slides/*.png
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
