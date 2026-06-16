@@ -1,6 +1,6 @@
 {
   "source": "presentation/Welcome_Inbet_Online.pptx",
-  "generated": "build.py output — edit titles freely; re-run build.py to refresh images",
+  "generated": "build.py output - edit titles freely; re-run build.py to refresh",
   "slides": [
     {
       "file": "slides/slide-01.jpg",
@@ -12,83 +12,131 @@
     },
     {
       "file": "slides/slide-03.jpg",
-      "title": "Teams — CRM"
+      "title": "Teams - CRM"
     },
     {
       "file": "slides/slide-04.jpg",
-      "title": "Teams — Casino & Live Casino"
+      "title": "Teams - Casino & Live Casino"
     },
     {
       "file": "slides/slide-05.jpg",
-      "title": "Teams — Sport"
+      "title": "Teams - Sport"
     },
     {
       "file": "slides/slide-06.jpg",
-      "title": "Teams — BI"
+      "title": "Teams - BI"
     },
     {
       "file": "slides/slide-07.jpg",
-      "title": "Teams — CS & VIP"
+      "title": "Teams - CS & VIP"
     },
     {
       "file": "slides/slide-08.jpg",
-      "title": "Teams — KYC & Payments"
+      "title": "Teams - KYC & Payments"
     },
     {
       "file": "slides/slide-09.jpg",
-      "title": "Teams — Risk & Fraud"
+      "title": "Teams - Risk & Fraud"
     },
     {
       "file": "slides/slide-10.jpg",
-      "title": "Teams — Marketing"
+      "title": "Teams - Marketing"
     },
     {
       "file": "slides/slide-11.jpg",
-      "title": "Teams — Project Management"
+      "title": "Teams - Project Management"
     },
     {
       "file": "slides/slide-12.jpg",
-      "title": "Teams — Poker & Svara"
+      "title": "Teams - Poker & Svara"
     },
     {
       "file": "slides/slide-13.jpg",
-      "title": "Teams — Legal, HR, Finance, Admin"
+      "title": "Teams - Legal, HR, Finance, Admin"
     },
     {
       "file": "slides/slide-14.jpg",
-      "title": "C-level — CEO"
+      "title": "C-level - CEO"
     },
     {
       "file": "slides/slide-15.jpg",
-      "title": "C-level — COO"
+      "title": "C-level - COO"
     },
     {
       "file": "slides/slide-16.jpg",
-      "title": "C-level — CFO"
+      "title": "C-level - CFO"
     },
     {
       "file": "slides/slide-17.jpg",
-      "title": "C-level — CMO"
+      "title": "C-level - CMO"
     },
     {
       "file": "slides/slide-18.jpg",
-      "title": "Best Practices — Jira"
+      "title": "Best Practices - Jira"
     },
     {
       "file": "slides/slide-19.jpg",
-      "title": "Best Practices — E-mail (Outlook)"
+      "title": "Best Practices - E-mail (Outlook)"
     },
     {
       "file": "slides/slide-20.jpg",
-      "title": "Access & Permissions — Accounts"
+      "title": "Access & Permissions - Accounts"
     },
     {
       "file": "slides/slide-21.jpg",
-      "title": "Access & Permissions — Websites"
+      "title": "Access & Permissions - Websites",
+      "links": [
+        {
+          "label": "EGT Digital Backoffice",
+          "url": "https://backoffice.egt-digital.com/dashboard/activity"
+        },
+        {
+          "label": "EGT Digital Backoffice Staging",
+          "url": "https://boadmin-uat.egt-digital.com/login"
+        },
+        {
+          "label": "EGT Digital Service Desk",
+          "url": "https://servicedesk.egt-digital.com/servicedesk/customer/portals"
+        },
+        {
+          "label": "Bamboo HR",
+          "url": "https://inbet.bamboohr.com/login.php?r=%2Fhome%2F"
+        },
+        {
+          "label": "Jira",
+          "url": "https://inbet-team-o4nnjzwlbs0c.atlassian.net/jira/core/projects/CRMT/board?filter=&groupBy=status"
+        },
+        {
+          "label": "Confluence",
+          "url": "https://inbet-team-o4nnjzwlbs0c.atlassian.net/wiki/spaces/CRM/calendars"
+        }
+      ]
     },
     {
       "file": "slides/slide-22.jpg",
-      "title": "First Steps in Getting to Know Inbet"
+      "title": "First Steps in Getting to Know Inbet",
+      "links": [
+        {
+          "label": "Inbet.com",
+          "url": "https://inbet.com/sports"
+        },
+        {
+          "label": "General T&Cs",
+          "url": "https://inbet.com/help"
+        },
+        {
+          "label": "Landing page",
+          "url": "https://inbet.com/ingame/promo-landing/no-deposit"
+        },
+        {
+          "label": "Offers",
+          "url": "https://inbet.com/promotions"
+        },
+        {
+          "label": "Create a test account",
+          "url": "https://inbet.com/registration"
+        }
+      ]
     },
     {
       "file": "slides/slide-23.jpg",

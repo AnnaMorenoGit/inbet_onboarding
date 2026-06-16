@@ -23,10 +23,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install LibreOffice + Poppler
+      - name: Install LibreOffice + Poppler + fonts
         run: |
           sudo apt-get update
-          sudo apt-get install -y libreoffice poppler-utils
+          sudo apt-get install -y libreoffice poppler-utils fonts-crosextra-carlito
 
       - name: Set up Python
         uses: actions/setup-python@v5
